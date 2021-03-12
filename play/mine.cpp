@@ -4,19 +4,24 @@ using namespace std;
 
 class find_mine {
 private:
+	//grid 선언
 	typedef struct {
 		int y;
 		int x;
 	}grid;
+	//기본 변수 선언
 	int mine[10005][10005] = {};
 	int cou[10005][10005] = {};
 	int open[10005][10005] = {};
 	int check[10005][10005] = {};
+	int X[8] = { 1,0,-1,-1,-1,0,1,1 };
+	int Y[8] = { 1,1,1,0,-1,-1,-1,0 };
+	//입력변수 선언
 	int N, M, cmine;
 	int input, n;
 	grid inpg;
-	int X[8] = { 1,0,-1,-1,-1,0,1,1 };
-	int Y[8] = { 1,1,1,0,-1,-1,-1,0 };
+
+	//주변 지뢰 갯수 반환
 	int fmine(int y, int x) {
 		int f = 0;
 		for (int i = 0; i < 8; i++)
@@ -26,12 +31,14 @@ private:
 		}
 		return f;
 	}
+	//주변 표시 갯수 반환
 	int count_check(int y, int x) {
 		for (int i = 0; i < 8; i++)
 		{
 
 		}
 	}
+	//맵 출력
 	void print() {
 		for (int i = 1; i <= N; i++)
 		{
@@ -43,6 +50,7 @@ private:
 			cout << '\n';
 		}
 	}
+	//한 점 출력
 	void printp(int y, int x) {
 		if (check[y][x] == 1) {
 			cout << "ㅇ";
@@ -56,6 +64,7 @@ private:
 				cout << "  ";
 		}
 	}
+	//한 점 열기(DFS)
 	void op(int y, int x) {
 		if (y <= 0 || x <= 0 || y > N || x > M)
 			return;
@@ -71,17 +80,20 @@ private:
 			}
 		}
 	}
+	//기본 배열 초기화, 랜덤 시드 초기화
 	void init() {
 		memset(mine, 0, sizeof(mine));
 		memset(open, 0, sizeof(open));
 		memset(check, 0, sizeof(check));
 		srand((unsigned int)time(NULL));
 	}
+	//오류메시지 출력
 	void wrong_input() {
 		system("cls");
 		print();
 		cout << "incollect selection\n";
 	}
+	//int to grid
 	grid ch(int input) {
 		grid tmp;
 		tmp.y = (input / N) + 1;
@@ -122,7 +134,7 @@ public:
 					wrong_input();
 					continue;
 				}
-				if (n == 0) {
+				if (n == 0) {//칸 열기
 					if (open[inpg.y][inpg.x] == 1) {
 						wrong_input();
 						continue;
@@ -135,13 +147,15 @@ public:
 						cout << "game over!\n\n\nDo you want to play again? y/n\n";
 						char str;
 						cin >> str;
-						if (str == 'y')
+						if (str == 'y') {
+							system("cls");
 							break;
+						}
 						else
 							return;
 					}
 				}
-				else if (n == 1) {
+				else if (n == 1) {//지뢰 표시
 					if (check[inpg.y][inpg.x] == 0) {
 						check[inpg.y][inpg.x] = 1;
 						if (mine[inpg.y][inpg.x] == 1)
@@ -154,6 +168,10 @@ public:
 					}
 				}
 				else {
+					if (open[inpg.y][inpg.x] == 0) {
+						wrong_input();
+						continue;
+					}
 
 				}
 				system("cls");
