@@ -10,16 +10,18 @@ private:
 		int x;
 	}grid;
 	//기본 변수 선언
-	int mine[10005][10005] = {};
-	int cou[10005][10005] = {};
-	int open[10005][10005] = {};
-	int check[10005][10005] = {};
+	int mine[35][70] = {};//29,60
+	int cou[35][70] = {};
+	int open[35][70] = {};
+	int check[35][70] = {};
 	int X[8] = { 1,0,-1,-1,-1,0,1,1 };
 	int Y[8] = { 1,1,1,0,-1,-1,-1,0 };
 	//입력변수 선언
 	int N, M, cmine;
 	int input, n;
 	grid inpg;
+	//에러 확인 변수
+	int e;
 
 	//주변 지뢰 갯수 반환
 	int fmine(int y, int x) {
@@ -103,9 +105,26 @@ private:
 public:
 	void start() {
 		while (1) {
+			e = 0;
 			cin >> N >> M >> cmine;
+			if (N < 1 || N>29 || M < 1 || M>60 || cmine<1 || cmine>N * M - 1)
+				system("cls");
+			if (N < 1 || N>29) {
+				cout << "select wigth 1~29\n";
+				e++;
+			}
+			if (M < 1 || M>60) {
+				cout << "select length 1~60\n";
+				e++;
+			}
+			if (cmine<1 || cmine>N * M - 1) {
+				cout << "select mine under area\n";
+				e++;
+			}
+			if (e)
+				continue;
 			init();
-			int x, y;
+			int x, y;Z
 			for (int i = 0; i < cmine; i++)
 			{
 				x = rand() % M;
