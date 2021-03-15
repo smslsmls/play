@@ -72,11 +72,11 @@ private:
 	}
 	//한 점 출력
 	void printp(int y, int x) {
-		if (check[y][x] == 1) {
+		if (open[y][x] == 0)
+			cout << "ㅁ";
+		else if (check[y][x] == 1) {
 			cout << "ㅇ";
 		}
-		else if (open[y][x] == 0)
-			cout << "ㅁ";
 		else {
 			if (cou[y][x])
 				cout << ' ' << cou[y][x];
@@ -109,11 +109,13 @@ private:
 		}
 		else {
 			system("cls");
-			cout << "game over!\n\n\nDo you want to play again? y/n\n";
+			cout << "game over!\n\n\n";
+			lose++;
+			cout << "Do you want to play again? y/n\n";
 			char str;
 			while (1) {
 				cin >> str;
-				if (str!='y'&&str!='n') {
+				if (str != 'y' && str != 'n') {
 					system("cls");
 					wrong_input();
 					cout << "input y or n\n";
@@ -202,7 +204,7 @@ private:
 	grid ch(int input) {
 		grid tmp;
 		tmp.y = (input / N) + 1;
-		tmp.x = input % M;
+		tmp.x = input % N;
 		return tmp;
 	}
 	//게임
@@ -255,13 +257,34 @@ private:
 					if (mine[inpg.y][inpg.x] == 1)
 						cmine++;
 				}
+				if (cmine == 0) {
+					cout << "You Win!!\n";
+					wins++;
+					cout << "Do you want to play again? y/n\n";
+					char str;
+					while (1) {
+						cin >> str;
+						if (str != 'y' && str != 'n') {
+							system("cls");
+							wrong_input();
+							cout << "input y or n\n";
+						}
+						else {
+							break;
+						}
+					}
+					if (str == 'y') {
+						system("cls");
+						return 0;
+					}
+					else {
+						return 1;
+					}
+				}
 			}
 			else {
-				if (open[inpg.y][inpg.x] == 1) {
-					wrong_input();
-					continue;
-				}
-
+				wrong_input();
+				continue;
 			}
 			system("cls");
 			print();
@@ -269,6 +292,7 @@ private:
 		return 0;
 	}
 public:
+	int wins, lose;
 	void start() {
 		while (1) {
 			stdinp();
