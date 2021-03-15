@@ -17,7 +17,9 @@ private:
 	int X[8] = { 1,0,-1,-1,-1,0,1,1 };
 	int Y[8] = { 1,1,1,0,-1,-1,-1,0 };
 	int rp;
-	int wins, lose;
+	int wins, loses;
+	string name;
+	map<string, pair<int, int>> data;
 	//입력변수 선언
 	int N, M, cmine;
 	int input, n;
@@ -25,6 +27,22 @@ private:
 	//에러 확인 변수
 	int e;
 
+	//파일로 데이터 받기
+	void data_init() {
+		ifstream file;
+		file.open(data.txt);
+		
+		if (readFile.is_open())
+		{
+			while (!readFile.eof())
+			{
+				string str;
+				getline(readFile, str);
+				cout << str << endl;
+			}
+			readFile.close();
+		}
+	}
 	//주변 지뢰 갯수 반환
 	int fmine(int y, int x) {
 		int f = 0;
@@ -113,7 +131,7 @@ private:
 		else {
 			system("cls");
 			cout << "game over!\n\n\n";
-			lose++;
+			loses++;
 			cout << "Do you want to play again? y/n\n";
 			char str;
 			while (1) {
@@ -310,7 +328,8 @@ public:
 			if (game())
 				break;
 		}
-		cout << "Your score\nWins : " << wins << "\nLoses : " << lose << '\n';
+		cout << "Your score\nWins : " << wins << "\nLoses : " << loses << '\n';
+
 	}
 };
 
