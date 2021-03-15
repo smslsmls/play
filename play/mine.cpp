@@ -304,6 +304,7 @@ public:
 			if (game())
 				break;
 		}
+		cout << "Your score\nWins : " << wins << "\nLoses : " << lose << '\n';
 	}
 };
 
