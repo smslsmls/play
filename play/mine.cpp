@@ -10,7 +10,7 @@ private:
 		int x;
 	}grid;
 	//기본 변수 선언
-	int mine[35][70] = {};//29,60
+	int mine[35][70] = {};//27,58
 	int cou[35][70] = {};
 	int open[35][70] = {};
 	int check[35][70] = {};
@@ -46,15 +46,29 @@ private:
 	}
 	//맵 출력
 	void print() {
+		cout << ' ';
+		for (int i = 0; i < M; i++)
+		{
+			cout << "--";
+		}
+		cout << " \n";
 		for (int i = 1; i <= N; i++)
 		{
+			cout << '|';
 			for (int j = 1; j <= M; j++)
 			{
 				printp(i, j);
 				//cout << mine[i][j];
 			}
+			cout<<'|';
 			cout << '\n';
 		}
+		cout << ' ';
+		for (int i = 0; i < M; i++)
+		{
+			cout << "--";
+		}
+		cout << " \n";
 	}
 	//한 점 출력
 	void printp(int y, int x) {
@@ -99,7 +113,7 @@ private:
 			char str;
 			while (1) {
 				cin >> str;
-				if (str!='y'&&str!='x') {
+				if (str!='y'&&str!='n') {
 					system("cls");
 					wrong_input();
 					cout << "input y or n\n";
@@ -135,20 +149,24 @@ private:
 	//기본 인풋
 	void stdinp() {
 		e = 0;
-		cin >> N >> M >> cmine;
-		if (N < 1 || N>29 || M < 1 || M>60 || cmine<1 || cmine>N * M - 1)
-			system("cls");
-		if (N < 1 || N>29) {
-			cout << "select wigth 1~29\n";
-			e++;
-		}
-		if (M < 1 || M>60) {
-			cout << "select length 1~60\n";
-			e++;
-		}
-		if (cmine<1 || cmine>N * M - 1) {
-			cout << "select mine under area\n";
-			e++;
+		while (1) {
+			cin >> N >> M >> cmine;
+			if (N < 1 || N>27 || M < 1 || M>58 || cmine<1 || cmine>N * M - 1)
+				system("cls");
+			if (N < 1 || N>27) {
+				cout << "select wigth 1~27\n";
+				e++;
+			}
+			if (M < 1 || M>58) {
+				cout << "select length 1~58\n";
+				e++;
+			}
+			if (cmine<1 || cmine>N * M - 1) {
+				cout << "select mine under area\n";
+				e++;
+			}
+			if (!e)
+				break;
 		}
 		return;
 	}
@@ -187,76 +205,80 @@ private:
 		tmp.x = input % M;
 		return tmp;
 	}
+	//게임
+	int game() {
+		while (1) {
+			cin >> n >> input;
+			inpg = ch(input);
+			if (inpg.y <= 0 || inpg.y > N || inpg.x <= 0 || inpg.x > M) {
+				wrong_input();
+				continue;
+			}
+			if (n == 0) {//칸 열기
+				if (open[inpg.y][inpg.x] == 1) {
+					if (cou[inpg.y][inpg.x]&&cou[inpg.y][inpg.x] == count_check(inpg.y, inpg.x)) {
+						for (int i = 0; i < 8; i++)
+						{
+							if (!opche(inpg.y, inpg.x)) {
+								break;
+							}
+						}
+						if (rp != -1) {
+							if (rp)
+								break;
+							else
+								return 1;
+						}
+					}
+					else {
+						wrong_input();
+						continue;
+					}
+				}
+				else {
+					if (!opche(inpg.y, inpg.x)) {
+						if (rp)
+							break;
+						else
+							return 1;
+					}
+				}
+			}
+			else if (n == 1) {//지뢰 표시
+				if (check[inpg.y][inpg.x] == 0) {
+					check[inpg.y][inpg.x] = 1;
+					if (mine[inpg.y][inpg.x] == 1)
+						cmine--;
+				}
+				else {
+					check[inpg.y][inpg.x] = 0;
+					if (mine[inpg.y][inpg.x] == 1)
+						cmine++;
+				}
+			}
+			else {
+				if (open[inpg.y][inpg.x] == 1) {
+					wrong_input();
+					continue;
+				}
+
+			}
+			system("cls");
+			print();
+		}
+		return 0;
+	}
 public:
 	void start() {
 		while (1) {
 			stdinp();
-			if (e)
-				continue;
 			init();
 			spmine();
 			init_cou();
 			system("cls");
 			print();
-			while (1) {
-				cin >> n >> input;
-				inpg = ch(input);
-				if (inpg.y <= 0 || inpg.y > N || inpg.x <= 0 || inpg.x > M) {
-					wrong_input();
-					continue;
-				}
-				if (n == 0) {//칸 열기
-					if (open[inpg.y][inpg.x] == 1) {
-						if (cou[inpg.y][inpg.x] == count_check(inpg.y, inpg.x)) {
-							for (int i = 0; i < 8; i++)
-							{
-								if (!opche(inpg.y,inpg.x)) {
-									break;
-								}
-							}
-							if (rp != -1) {
-								if (rp)
-									break;
-								else
-									return;
-							}
-						}
-						else {
-							wrong_input();
-							continue;
-						}
-					}
-					else {
-						if (!opche(inpg.y,inpg.x)) {
-							if (rp)
-								break;
-							else
-								return;
-						}
-					}
-				}
-				else if (n == 1) {//지뢰 표시
-					if (check[inpg.y][inpg.x] == 0) {
-						check[inpg.y][inpg.x] = 1;
-						if (mine[inpg.y][inpg.x] == 1)
-							cmine--;
-					}
-					else {
-						check[inpg.y][inpg.x] = 0;
-						if (mine[inpg.y][inpg.x] == 1)
-							cmine++;
-					}
-				}
-				else {
-					if (open[inpg.y][inpg.x] == 1) {
-						wrong_input();
-						continue;
-					}
-
-				}
-				system("cls");
-				print();
-			}
+			if (game())
+				break;
 		}
 	}
 };
