@@ -10,13 +10,14 @@ private:
 		int x;
 	}grid;
 	//기본 변수 선언
-	int mine[35][70] = {};//27,58
+	int mine[35][70] = {};//27,59
 	int cou[35][70] = {};
 	int open[35][70] = {};
 	int check[35][70] = {};
 	int X[8] = { 1,0,-1,-1,-1,0,1,1 };
 	int Y[8] = { 1,1,1,0,-1,-1,-1,0 };
 	int rp;
+	int wins, lose;
 	//입력변수 선언
 	int N, M, cmine;
 	int input, n;
@@ -60,7 +61,7 @@ private:
 				printp(i, j);
 				//cout << mine[i][j];
 			}
-			cout<<'|';
+			cout << '|';
 			cout << '\n';
 		}
 		cout << ' ';
@@ -72,10 +73,12 @@ private:
 	}
 	//한 점 출력
 	void printp(int y, int x) {
-		if (open[y][x] == 0)
-			cout << "ㅁ";
-		else if (check[y][x] == 1) {
-			cout << "ㅇ";
+		if (open[y][x] == 0) {
+			if (check[y][x] == 1) {
+				cout << "ㅇ";
+			}
+			else
+				cout << "ㅁ";
 		}
 		else {
 			if (cou[y][x])
@@ -153,14 +156,14 @@ private:
 		e = 0;
 		while (1) {
 			cin >> N >> M >> cmine;
-			if (N < 1 || N>27 || M < 1 || M>58 || cmine<1 || cmine>N * M - 1)
+			if (N < 1 || N>27 || M < 1 || M>59 || cmine<1 || cmine>N * M - 1)
 				system("cls");
 			if (N < 1 || N>27) {
 				cout << "select wigth 1~27\n";
 				e++;
 			}
-			if (M < 1 || M>58) {
-				cout << "select length 1~58\n";
+			if (M < 1 || M>59) {
+				cout << "select length 1~59\n";
 				e++;
 			}
 			if (cmine<1 || cmine>N * M - 1) {
@@ -203,8 +206,12 @@ private:
 	//int to grid
 	grid ch(int input) {
 		grid tmp;
-		tmp.y = (input / N) + 1;
-		tmp.x = input % N;
+		tmp.y = (input / M) + 1;
+		tmp.x = input % M;
+		if (tmp.x == 0) {
+			tmp.x = M;
+			tmp.y--;
+		}
 		return tmp;
 	}
 	//게임
@@ -218,7 +225,7 @@ private:
 			}
 			if (n == 0) {//칸 열기
 				if (open[inpg.y][inpg.x] == 1) {
-					if (cou[inpg.y][inpg.x]&&cou[inpg.y][inpg.x] == count_check(inpg.y, inpg.x)) {
+					if (cou[inpg.y][inpg.x] && cou[inpg.y][inpg.x] == count_check(inpg.y, inpg.x)) {
 						for (int i = 0; i < 8; i++)
 						{
 							if (!opche(inpg.y, inpg.x)) {
@@ -292,7 +299,6 @@ private:
 		return 0;
 	}
 public:
-	int wins, lose;
 	void start() {
 		while (1) {
 			stdinp();
@@ -312,4 +318,6 @@ find_mine m;
 
 int main(void) {
 	m.start();
+
+	return 0;
 }
