@@ -22,7 +22,7 @@ private:
 	int wins, loses;
 	string name;
 	set<string> s;
-	map<string, pair<int,int>> data;
+	map<string, pair<int, int>> data;
 	//입력변수 선언
 	int N, M, cmine;
 	int input, n;
@@ -34,7 +34,7 @@ private:
 	void data_init() {
 		ifstream file;
 		file.open(data.txt);
-		
+
 		if (readFile.is_open())
 		{
 			while (!readFile.eof())
@@ -42,15 +42,48 @@ private:
 				string str;
 				getline(readFile, str);
 				p tmp = str_to _pair(str);
-				if (s.find(p.first) == s.end()) {
-					s.insert(p.first);
+				if (s.find(tmp.first) == s.end()) {
+					s.insert(tmp.first);
+					data[tmp.first] = tmp.second;
+				}
+				else {
+					char a;
+					while (1) {
+						cout << "Data is already inserted\nDo you want to change? y/n\n";
+						cin >> a;
+						if (a != 'y' && a != 'n') {
+							wrong_input();
+						}
+						else
+							break;
+					}
+					if (a == 'y')
+						data[tmp.first] = tmp.second;
 				}
 			}
 			readFile.close();
 		}
 	}
-	p str_to_pair(string str) {
+	//string을 pair로 변환
+	p str_to_pair(string a) {
+		p out;
+		string str_arr[1000];
+		int str_cnt;
 
+		char* str_buff = new char[1000];
+		strcpy(str_buff, a.c_str());
+
+		char* tok = strtok(str_buff, " ");
+		while (tok != nullptr) {
+			str_arr[str_cnt++] = string(tok);
+			tok = strtok(nullptr, " ");
+		}
+
+		out.first = str_arr[0];
+		out.second.first = stoi(str_arr[1]);
+		out.second.second = stoi(str_arr[2]);
+
+		return p;
 	}
 	//주변 지뢰 갯수 반환
 	int fmine(int y, int x) {
