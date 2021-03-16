@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -12,7 +12,7 @@ private:
 		int x;
 	}grid;
 	//기본 변수 선언
-	int mine[35][70] = {};//27,59
+	int mine[35][70] = {};//27,58
 	int cou[35][70] = {};
 	int open[35][70] = {};
 	int check[35][70] = {};
@@ -30,18 +30,18 @@ private:
 	//에러 확인 변수
 	int e;
 
-	//파일로 데이터 받기
+	//파일로 데이터 받기  *실패
 	void data_init() {
 		ifstream file;
-		file.open(data.txt);
+		file.open("data.txt");
 
-		if (readFile.is_open())
+		if (file.is_open())
 		{
-			while (!readFile.eof())
+			while (!file.eof())
 			{
 				string str;
-				getline(readFile, str);
-				p tmp = str_to _pair(str);
+				getline(file, str);
+				p tmp;
 				if (s.find(tmp.first) == s.end()) {
 					s.insert(tmp.first);
 					data[tmp.first] = tmp.second;
@@ -61,14 +61,14 @@ private:
 						data[tmp.first] = tmp.second;
 				}
 			}
-			readFile.close();
+			file.close();
 		}
 	}
 	//string을 pair로 변환
 	p str_to_pair(string a) {
 		p out;
 		string str_arr[1000];
-		int str_cnt;
+		int str_cnt = 0;
 
 		char* str_buff = new char[1000];
 		strcpy(str_buff, a.c_str());
@@ -83,7 +83,7 @@ private:
 		out.second.first = stoi(str_arr[1]);
 		out.second.second = stoi(str_arr[2]);
 
-		return p;
+		return out;
 	}
 	//주변 지뢰 갯수 반환
 	int fmine(int y, int x) {
@@ -107,15 +107,21 @@ private:
 	}
 	//맵 출력
 	void print() {
-		cout << ' ';
-		for (int i = 0; i < M; i++)
+		cout << "  ";
+		for (int i = 1; i <= M; i++)
 		{
-			cout << "--";
+			if (i < 10)
+				cout << i << ' ';
+			else
+				cout << i;
 		}
 		cout << " \n";
 		for (int i = 1; i <= N; i++)
 		{
-			cout << '|';
+			if (i < 10)
+				cout << i << ' ';
+			else
+				cout << i;
 			for (int j = 1; j <= M; j++)
 			{
 				printp(i, j);
@@ -124,7 +130,7 @@ private:
 			cout << '|';
 			cout << '\n';
 		}
-		cout << ' ';
+		cout << "  ";
 		for (int i = 0; i < M; i++)
 		{
 			cout << "--";
@@ -213,17 +219,17 @@ private:
 	}
 	//기본 인풋
 	void stdinp() {
-		e = 0;
 		while (1) {
+			e = 0;
 			cin >> N >> M >> cmine;
-			if (N < 1 || N>27 || M < 1 || M>59 || cmine<1 || cmine>N * M - 1)
+			if (N < 1 || N>27 || M < 1 || M>58 || cmine<1 || cmine>N * M - 1)
 				system("cls");
 			if (N < 1 || N>27) {
 				cout << "select wigth 1~27\n";
 				e++;
 			}
-			if (M < 1 || M>59) {
-				cout << "select length 1~59\n";
+			if (M < 1 || M>58) {
+				cout << "select length 1~58\n";
 				e++;
 			}
 			if (cmine<1 || cmine>N * M - 1) {
