@@ -4,6 +4,8 @@ using namespace std;
 
 class find_mine {
 private:
+	//pair 선언
+	typedef pair<string, pair<int, int>> p;
 	//grid 선언
 	typedef struct {
 		int y;
@@ -19,7 +21,8 @@ private:
 	int rp;
 	int wins, loses;
 	string name;
-	map<string, pair<int, int>> data;
+	set<string> s;
+	map<string, pair<int,int>> data;
 	//입력변수 선언
 	int N, M, cmine;
 	int input, n;
@@ -38,10 +41,16 @@ private:
 			{
 				string str;
 				getline(readFile, str);
-				cout << str << endl;
+				p tmp = str_to _pair(str);
+				if (s.find(p.first) == s.end()) {
+					s.insert(p.first);
+				}
 			}
 			readFile.close();
 		}
+	}
+	p str_to_pair(string str) {
+
 	}
 	//주변 지뢰 갯수 반환
 	int fmine(int y, int x) {
