@@ -55,9 +55,11 @@ private:
 		{
 			for (int j = 0; j < M; j++)
 			{
-				if(!map[i][j]||)
+				if (!map[i][j] || nch(j, i))
+					return 1;
 			}
 		}
+		return 0;
 	}
 	//주변과 내가 같은지 확인
 	int nch(int x, int y) {
@@ -70,7 +72,16 @@ private:
 		}
 		return 1;
 	}
+	//이동 위
+	int moveup() {
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < M; j++)
+			{
 
+			}
+		}
+	}
 public:
 	void start() {
 		init();
@@ -84,6 +95,6 @@ public:
 
 _2048 _2_0_4_8;
 
-int main() {
+int _2048_main() {
 	_2_0_4_8.start();
 }

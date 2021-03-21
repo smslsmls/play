@@ -283,8 +283,7 @@ private:
 	//°ÔÀÓ
 	int game() {
 		while (1) {
-			cin >> n >> input;
-			inpg = ch(input);
+			cin >> n >> inpg.y >> inpg.x;
 			if (inpg.y <= 0 || inpg.y > N || inpg.x <= 0 || inpg.x > M) {
 				wrong_input();
 				continue;
