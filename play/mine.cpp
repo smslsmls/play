@@ -382,7 +382,7 @@ public:
 
 find_mine m;
 
-int main(void) {
+int mine_main(void) {
 	m.start();
 
 	return 0;
