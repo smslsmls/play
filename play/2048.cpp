@@ -8,11 +8,18 @@ private:
 	int N, M;//10,10
 	int score;
 	int map[15][15];
+	int ch[15][15];
+	int print_buffer[15];
+	int print_now;
 	int X[4] = { 1,0,-1,0 };
 	int Y[4] = { 0,1,0,-1 };
+	int inp;
 	int move;
+	int check;
+	char yn;
 	//초기화
 	void init() {
+		system("cls");
 		srand((unsigned int)time(NULL));
 		memset(map, 0, sizeof(map));
 		score = 0;
@@ -21,9 +28,9 @@ private:
 	void stdinp() {
 		while (1) {
 			cin >> N >> M;
-			if (N > 10 || N < 0 || M > 10 || M < 0) {
+			if (N > 10 || N < 2 || M > 10 || M < 2) {
 				wrong_input();
-				cout << "select 1~10\n";
+				cout << "select 2~10\n";
 			}
 			else
 				break;
@@ -32,26 +39,72 @@ private:
 	//맵 출력
 	void print() {
 		cout << " ";
-		for (int i = 1; i <= M * 3 - 1; i++)
+		for (int i = 1; i <= M * 5 - 1; i++)
 		{
 			cout << '-';
 		}
 		cout << '\n';
 		for (int i = 1; i <= N; i++)
 		{
+			memset(print_buffer, 0, sizeof(print_buffer));
 			cout << "|";
 			for (int j = 1; j <= M; j++)
 			{
 				if (map[i][j] == 0)
-					cout << "  ";
-				else
-					cout << map[i][j] << ' ';
+					cout << "    ";
+				else if (map[i][j] < 10)
+					cout << "  " << map[i][j]<<' ';
+				else if (map[i][j] < 100)
+					cout << " " << map[i][j]<<' ';
+				else if (map[i][j] < 1000)
+					cout << ' ' << map[i][j];
+				else if (map[i][j] < 10000)
+					cout << map[i][j];
+				else if (map[i][j] < 100000) {
+					print_now = map[i][j];
+					print_buffer[j] = print_now % 10;
+					print_now /= 10;
+					cout << print_now;
+				}
+				else if (map[i][j] < 1000000) {
+					print_now = map[i][j];
+					print_buffer[j] = print_now % 100;
+					print_now /= 100;
+					cout << print_now;
+				}
+				else if (map[i][j] < 10000000) {
+					print_now = map[i][j];
+					print_buffer[j] = print_now % 1000;
+					print_now /= 1000;
+					cout << print_now;
+				}
+				else if (map[i][j] < 100000000) {
+					print_now = map[i][j];
+					print_buffer[j] = print_now % 10000;
+					print_now /= 10000;
+					cout << print_now;
+				}
+				cout << "|";
+			}
+			cout << "\n|";
+			for (int j = 1; j <= M; j++)
+			{
+				if (print_buffer[j] == 0)
+					cout << "    ";
+				else if (print_buffer[j] < 10)
+					cout << "  " << print_buffer[j] << ' ';
+				else if (print_buffer[j] < 100)
+					cout << ' ' << print_buffer[j] << ' ';
+				else if (print_buffer[j] < 1000)
+					cout << ' ' << print_buffer[j];
+				else if (print_buffer[j] < 10000)
+					cout << print_buffer[j];
 				cout << "|";
 			}
 			cout << "\n ";
-			for (int i = 1; i <= M * 3 - 1; i++)
+			for (int j = 1; j <= M * 5 - 1; j++)
 			{
-				if (i % 3 == 0)
+				if (j % 5 == 0)
 					cout << ' ';
 				else
 					cout << '-';
@@ -102,12 +155,13 @@ private:
 		for (int i = 0; i < 4; i++)
 		{
 			if (map[y][x] == map[y + Y[i]][x + X[i]])
-				return 0;
+				return 1;
 		}
-		return 1;
+		return 0;
 	}
 	//이동 위
-	void moveup() {
+	int moveup() {
+		int re = 0;
 		for (int i = 1; i <= N; i++)
 		{
 			for (int j = 1; j <= M; j++)
@@ -116,8 +170,10 @@ private:
 				for (int t = i - 1; t > 0; t--)
 				{
 					if (map[t][j] != 0) {
-						if (map[i][j] == map[t][j]) {
+						if (map[i][j] == map[t][j] && ch[t][j] == 0) {
 							map[i][j] *= 2;
+							score += map[i][j];
+							ch[t][j] = 1;
 							move = t;
 						}
 						break;
@@ -126,66 +182,50 @@ private:
 						move = t;
 				}
 				map[move][j] = map[i][j];
-				if (move != i)
+				if (move != i && map[i][j] != 0) {
 					map[i][j] = 0;
+					re = 1;
+				}
 			}
 		}
-		//system("cls");
+		system("cls");
+		return re;
 	}
 	//이동 왼쪽
-	void moveleft() {
+	int moveleft() {
+		int re = 0;
 		for (int j = 1; j <= N; j++)
 		{
 			for (int i = 1; i <= M; i++)
 			{
 				move = j;
-				for (int t = i - 1; t > 0; t--)
+				for (int t = j - 1; t > 0; t--)
 				{
 					if (map[i][t] != 0) {
-						if (map[i][j] == map[i][t]) {
+						if (map[i][j] == map[i][t] && ch[i][t] == 0) {
 							map[i][j] *= 2;
+							score += map[i][j];
+							ch[i][t] = 1;
 							move = t;
 						}
 						break;
 					}
-					else
+					else {
 						move = t;
-				}
-				map[i][move] = map[i][j];
-				if (move != j)
-					map[i][j] = 0;
-			}
-		}
-		//system("cls");
-	}
-	//이동 오른쪽
-	void moveright() {
-		for (int j = N; j > 0; j--)
-		{
-			for (int i = M; i > 0; i--)
-			{
-				move = j;
-				for (int t = i + 1; t <= N; t++)
-				{
-					if (map[i][t] != 0) {
-						if (map[i][j] == map[i][t]) {
-							map[i][j] *= 2;
-							move = t;
-						}
-						break;
+						re = 1;
 					}
-					else
-						move = t;
 				}
 				map[i][move] = map[i][j];
-				if (move != j)
+				if (move != j && map[i][j] != 0)
 					map[i][j] = 0;
 			}
 		}
-		//system("cls");
+		system("cls");
+		return re;
 	}
 	//이동 아래
-	void movedown() {
+	int movedown() {
+		int re = 0;
 		for (int i = N; i > 0; i--)
 		{
 			for (int j = M; j > 0; j--)
@@ -194,8 +234,10 @@ private:
 				for (int t = i + 1; t <= N; t++)
 				{
 					if (map[t][j] != 0) {
-						if (map[i][j] == map[t][j]) {
+						if (map[i][j] == map[t][j] && ch[t][j] == 0) {
 							map[i][j] *= 2;
+							score += map[i][j];
+							ch[t][j] = 1;
 							move = t;
 						}
 						break;
@@ -204,26 +246,100 @@ private:
 						move = t;
 				}
 				map[move][j] = map[i][j];
-				if (move != i)
+				if (move != i && map[i][j] != 0) {
+					map[i][j] = 0;
+					re = 1;
+				}
+			}
+		}
+		system("cls");
+		return re;
+	}
+	//이동 오른쪽
+	int moveright() {
+		int re = 0;
+		for (int j = N; j > 0; j--)
+		{
+			for (int i = M; i > 0; i--)
+			{
+				move = j;
+				for (int t = j + 1; t <= N; t++)
+				{
+					if (map[i][t] != 0) {
+						if (map[i][j] == map[i][t] && ch[i][t] == 0) {
+							map[i][j] *= 2;
+							score += map[i][j];
+							ch[i][t] = 1;
+							move = t;
+						}
+						break;
+					}
+					else {
+						move = t;
+						re = 1;
+					}
+				}
+				map[i][move] = map[i][j];
+				if (move != j && map[i][j] != 0)
 					map[i][j] = 0;
 			}
 		}
-		//system("cls");
+		system("cls");
+		return re;
 	}
 public:
 	void start() {
-		init();
-		stdinp();
-		summon();
-		summon();
-		print();
-		map[1][1] = 2;
-		map[1][2] = 2;
-		map[1][3] = 2;
-		moveleft();
-		print();
-		while (!empty()) {
-
+		while (1) {
+			init();
+			stdinp();
+			summon();
+			summon();
+			print();
+			while (!empty()) {
+				cin >> inp;
+				memset(ch, 0, sizeof(ch));
+				check = 0;
+				switch (inp)
+				{
+				case 1:
+					if (moveup())
+						check = 1;
+					break;
+				case 2:
+					if (moveleft())
+						check = 1;
+					break;
+				case 3:
+					if (movedown())
+						check = 1;
+					break;
+				case 4:
+					if (moveright())
+						check = 1;
+					break;
+				}
+				if (check) {
+					summon();
+				}
+				print();
+			}
+			system("cls");
+			print();
+			cout << "game over!\nscore : " << score << "\nDo you want to play again? y/n\n";
+			while (1) {
+				cin >> yn;
+				if (yn != 'y' && yn != 'n') {
+					system("cls");
+					wrong_input();
+					cout << "input y/n\n";
+				}
+				else {
+					if (yn == 'y')
+						break;
+					if (yn == 'n')
+						return;
+				}
+			}
 		}
 	}
 };
