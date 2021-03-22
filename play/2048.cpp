@@ -1,22 +1,23 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include<bits/stdc++.h>
+#include<conio.h>
 using namespace std;
 
 class _2048 {
 private:
 	//기본변수 선언
 	int N, M;//10,10
-	int score;
-	int map[15][15];
-	int ch[15][15];
-	int print_buffer[15];
-	int print_now;
-	int X[4] = { 1,0,-1,0 };
-	int Y[4] = { 0,1,0,-1 };
-	int inp;
-	int move;
-	int check;
-	char yn;
+	int score;//점수
+	int map[15][15];//맵
+	int ch[15][15];//바뀌었는지 체크
+	int print_buffer[15];//출력버퍼
+	int print_now;//출력시 사용변수
+	int X[4] = { 1,0,-1,0 };//X이동
+	int Y[4] = { 0,1,0,-1 };//Y이동
+	int inp;//입력
+	int move;//이동위치
+	int check;//이동하였는지 체크
+	char yn;//재시작, 끝내기
 	//초기화
 	void init() {
 		system("cls");
@@ -292,36 +293,37 @@ private:
 	//게임
 	int game() {
 		while (!empty()) {
-			cin.clear();
-			cin >> inp;
-			memset(ch, 0, sizeof(ch));
-			check = 0;
-			switch (inp)
-			{
-			case 5:
-				if (moveup())
-					check = 1;
-				break;
-			case 1:
-				if (moveleft())
-					check = 1;
-				break;
-			case 2:
-				if (movedown())
-					check = 1;
-				break;
-			case 3:
-				if (moveright())
-					check = 1;
-				break;
-			default:
-				system("cls");
-				break;
+			if (_kbhit()) {
+				inp = _getch();
+				memset(ch, 0, sizeof(ch));
+				check = 0;
+				switch (inp)
+				{
+				case 119:
+					if (moveup())
+						check = 1;
+					break;
+				case 97:
+					if (moveleft())
+						check = 1;
+					break;
+				case 115:
+					if (movedown())
+						check = 1;
+					break;
+				case 100:
+					if (moveright())
+						check = 1;
+					break;
+				default:
+					system("cls");
+					break;
+				}
+				if (check) {
+					summon();
+				}
+				print();
 			}
-			if (check) {
-				summon();
-			}
-			print();
 		}
 		system("cls");
 		print();
