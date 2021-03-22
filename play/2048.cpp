@@ -5,18 +5,21 @@ using namespace std;
 
 class _2048 {
 private:
+	//상수 선언
+	int X[4] = { 1,0,-1,0 };//X이동
+	int Y[4] = { 0,1,0,-1 };//Y이동
 	//기본변수 선언
-	int N, M;//10,10
+	int N, M;//10,10 맵 크기
 	int score;//점수
 	int map[15][15];//맵
 	int ch[15][15];//바뀌었는지 체크
 	int print_buffer[15];//출력버퍼
 	int print_now;//출력시 사용변수
-	int X[4] = { 1,0,-1,0 };//X이동
-	int Y[4] = { 0,1,0,-1 };//Y이동
 	int inp;//입력
 	int move;//이동위치
 	int check;//이동하였는지 체크
+	int bignum;//최대 숫자
+	int con;//계속 플레이
 	char yn;//재시작, 끝내기
 	//초기화
 	void init() {
@@ -24,6 +27,8 @@ private:
 		srand((unsigned int)time(NULL));
 		memset(map, 0, sizeof(map));
 		score = 0;
+		bignum = 0;
+		con = 0;
 	}
 	//기본 인풋
 	void stdinp() {
@@ -43,7 +48,10 @@ private:
 		cout << " ";
 		for (int i = 1; i <= M * 5 - 1; i++)
 		{
-			cout << '-';
+			if (i % 5 == 0)
+				cout << ' ';
+			else
+				cout << '-';
 		}
 		cout << '\n';
 		for (int i = 1; i <= N; i++)
@@ -55,9 +63,9 @@ private:
 				if (map[i][j] == 0)
 					cout << "    ";
 				else if (map[i][j] < 10)
-					cout << "  " << map[i][j]<<' ';
+					cout << "  " << map[i][j] << ' ';
 				else if (map[i][j] < 100)
-					cout << " " << map[i][j]<<' ';
+					cout << " " << map[i][j] << ' ';
 				else if (map[i][j] < 1000)
 					cout << ' ' << map[i][j];
 				else if (map[i][j] < 10000)
@@ -176,6 +184,7 @@ private:
 						if (map[i][j] == map[t][j] && ch[t][j] == 0) {
 							map[i][j] *= 2;
 							score += map[i][j];
+							bignum = (map[i][j] > bignum) ? map[i][j] : bignum;
 							ch[t][j] = 1;
 							move = t;
 						}
@@ -197,9 +206,9 @@ private:
 	//이동 왼쪽
 	int moveleft() {
 		int re = 0;
-		for (int j = 1; j <= N; j++)
+		for (int j = 1; j <= M; j++)
 		{
-			for (int i = 1; i <= M; i++)
+			for (int i = 1; i <= N; i++)
 			{
 				move = j;
 				for (int t = j - 1; t > 0; t--)
@@ -208,6 +217,7 @@ private:
 						if (map[i][j] == map[i][t] && ch[i][t] == 0) {
 							map[i][j] *= 2;
 							score += map[i][j];
+							bignum = (map[i][j] > bignum) ? map[i][j] : bignum;
 							ch[i][t] = 1;
 							move = t;
 						}
@@ -240,6 +250,7 @@ private:
 						if (map[i][j] == map[t][j] && ch[t][j] == 0) {
 							map[i][j] *= 2;
 							score += map[i][j];
+							bignum = (map[i][j] > bignum) ? map[i][j] : bignum;
 							ch[t][j] = 1;
 							move = t;
 						}
@@ -261,17 +272,18 @@ private:
 	//이동 오른쪽
 	int moveright() {
 		int re = 0;
-		for (int j = N; j > 0; j--)
+		for (int j = M; j > 0; j--)
 		{
-			for (int i = M; i > 0; i--)
+			for (int i = N; i > 0; i--)
 			{
 				move = j;
-				for (int t = j + 1; t <= N; t++)
+				for (int t = j + 1; t <= M; t++)
 				{
 					if (map[i][t] != 0) {
 						if (map[i][j] == map[i][t] && ch[i][t] == 0) {
 							map[i][j] *= 2;
 							score += map[i][j];
+							bignum = (map[i][j] > bignum) ? map[i][j] : bignum;
 							ch[i][t] = 1;
 							move = t;
 						}
@@ -295,34 +307,59 @@ private:
 		while (!empty()) {
 			if (_kbhit()) {
 				inp = _getch();
-				memset(ch, 0, sizeof(ch));
-				check = 0;
-				switch (inp)
-				{
-				case 119:
-					if (moveup())
-						check = 1;
-					break;
-				case 97:
-					if (moveleft())
-						check = 1;
-					break;
-				case 115:
-					if (movedown())
-						check = 1;
-					break;
-				case 100:
-					if (moveright())
-						check = 1;
-					break;
-				default:
-					system("cls");
-					break;
+				if (inp == 224) {
+					inp = _getch();
+					memset(ch, 0, sizeof(ch));
+					check = 0;
+					switch (inp)
+					{
+					case 72:
+						if (moveup())
+							check = 1;
+						break;
+					case 75:
+						if (moveleft())
+							check = 1;
+						break;
+					case 80:
+						if (movedown())
+							check = 1;
+						break;
+					case 77:
+						if (moveright())
+							check = 1;
+						break;
+					default:
+						system("cls");
+						break;
+					}
+					if (check) {
+						if (bignum >= 2048&&con==0) {
+							cout << "You make 2048!\nDo you want to play continue? y/n\n";
+							cin >> yn;
+							while (yn != 'y' && yn != 'n') {
+								wrong_input();
+								cin >> yn;
+							}
+							if (yn == 'n') {
+								cout << "Do you want to play again? y/n\n";
+								cin >> yn;
+								while (yn != 'y' && yn != 'n') {
+									wrong_input();
+									cin >> yn;
+								}
+								if (yn == 'y')
+									return 1;
+								else
+									return 0;
+							}
+							else
+								con = 1;
+						}
+						summon();
+					}
+					print();
 				}
-				if (check) {
-					summon();
-				}
-				print();
 			}
 		}
 		system("cls");
@@ -350,6 +387,7 @@ public:
 			stdinp();
 			summon();
 			summon();
+			system("cls");
 			print();
 			if (!game())
 				break;
