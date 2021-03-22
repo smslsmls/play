@@ -27,6 +27,7 @@ private:
 	//기본 인풋
 	void stdinp() {
 		while (1) {
+			cin.clear();
 			cin >> N >> M;
 			if (N > 10 || N < 2 || M > 10 || M < 2) {
 				wrong_input();
@@ -111,6 +112,7 @@ private:
 			}
 			cout << '\n';
 		}
+		cout << "\nscore : " << score << "\n\n\n";
 	}
 	//2,4 생성
 	void summon() {
@@ -287,6 +289,58 @@ private:
 		system("cls");
 		return re;
 	}
+	//게임
+	int game() {
+		while (!empty()) {
+			cin.clear();
+			cin >> inp;
+			memset(ch, 0, sizeof(ch));
+			check = 0;
+			switch (inp)
+			{
+			case 5:
+				if (moveup())
+					check = 1;
+				break;
+			case 1:
+				if (moveleft())
+					check = 1;
+				break;
+			case 2:
+				if (movedown())
+					check = 1;
+				break;
+			case 3:
+				if (moveright())
+					check = 1;
+				break;
+			default:
+				system("cls");
+				break;
+			}
+			if (check) {
+				summon();
+			}
+			print();
+		}
+		system("cls");
+		print();
+		cout << "game over!\nscore : " << score << "\nDo you want to play again? y/n\n";
+		while (1) {
+			cin >> yn;
+			if (yn != 'y' && yn != 'n') {
+				system("cls");
+				wrong_input();
+				cout << "input y/n\n";
+			}
+			else {
+				if (yn == 'y')
+					return 1;
+				if (yn == 'n')
+					return 0;
+			}
+		}
+	}
 public:
 	void start() {
 		while (1) {
@@ -295,51 +349,8 @@ public:
 			summon();
 			summon();
 			print();
-			while (!empty()) {
-				cin >> inp;
-				memset(ch, 0, sizeof(ch));
-				check = 0;
-				switch (inp)
-				{
-				case 1:
-					if (moveup())
-						check = 1;
-					break;
-				case 2:
-					if (moveleft())
-						check = 1;
-					break;
-				case 3:
-					if (movedown())
-						check = 1;
-					break;
-				case 4:
-					if (moveright())
-						check = 1;
-					break;
-				}
-				if (check) {
-					summon();
-				}
-				print();
-			}
-			system("cls");
-			print();
-			cout << "game over!\nscore : " << score << "\nDo you want to play again? y/n\n";
-			while (1) {
-				cin >> yn;
-				if (yn != 'y' && yn != 'n') {
-					system("cls");
-					wrong_input();
-					cout << "input y/n\n";
-				}
-				else {
-					if (yn == 'y')
-						break;
-					if (yn == 'n')
-						return;
-				}
-			}
+			if (!game())
+				break;
 		}
 	}
 };
