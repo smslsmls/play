@@ -18,7 +18,7 @@ private:
 	int check[35][70] = {};//지뢰 체크
 	int X[8] = { 1,0,-1,-1,-1,0,1,1 };//X이동
 	int Y[8] = { 1,1,1,0,-1,-1,-1,0 };//Y이동
-	int rp;//뭔지 까먹음
+	int rp;//재시작 확인 변수
 	int wins, loses;//승패
 	string name;//파일입출력 이름
 	set<string> s;//파일입출력 이름 저장
