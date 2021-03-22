@@ -13,20 +13,20 @@ private:
 	}grid;
 	//기본 변수 선언
 	int mine[35][70] = {};//27,58
-	int cou[35][70] = {};
-	int open[35][70] = {};
-	int check[35][70] = {};
-	int X[8] = { 1,0,-1,-1,-1,0,1,1 };
-	int Y[8] = { 1,1,1,0,-1,-1,-1,0 };
-	int rp;
-	int wins, loses;
-	string name;
-	set<string> s;
-	map<string, pair<int, int>> data;
+	int cou[35][70] = {};//주변지뢰갯수
+	int open[35][70] = {};//열렸는지 확인
+	int check[35][70] = {};//지뢰 체크
+	int X[8] = { 1,0,-1,-1,-1,0,1,1 };//X이동
+	int Y[8] = { 1,1,1,0,-1,-1,-1,0 };//Y이동
+	int rp;//뭔지 까먹음
+	int wins, loses;//승패
+	string name;//파일입출력 이름
+	set<string> s;//파일입출력 이름 저장
+	map<string, pair<int, int>> data;//파일입출력 데이터 저장
 	//입력변수 선언
-	int N, M, cmine;
-	int input, n;
-	grid inpg;
+	int N, M, cmine;//맵크기, 지뢰갯수
+	int input, n;//입력
+	grid inpg;//입력 좌표
 	//에러 확인 변수
 	int e;
 
