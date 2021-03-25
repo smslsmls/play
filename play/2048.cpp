@@ -397,7 +397,7 @@ public:
 
 _2048 _2_0_4_8;
 
-int main() {
+int _2048_main() {
 	_2_0_4_8.start();
 
 	return 0;
