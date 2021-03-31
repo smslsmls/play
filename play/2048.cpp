@@ -125,7 +125,7 @@ private:
 	}
 	//2,4 »ı¼º
 	void summon() {
-		int ran = rand();
+		int ran = rand() % 10;
 		int n;
 		int rx, ry;
 		if (ran)
@@ -334,7 +334,7 @@ private:
 						break;
 					}
 					if (check) {
-						if (bignum >= 2048&&con==0) {
+						if (bignum >= 2048 && con == 0) {
 							cout << "You make 2048!\nDo you want to play continue? y/n\n";
 							cin >> yn;
 							while (yn != 'y' && yn != 'n') {
@@ -397,7 +397,7 @@ public:
 
 _2048 _2_0_4_8;
 
-int _2048_main() {
+int main() {
 	_2_0_4_8.start();
 
 	return 0;
