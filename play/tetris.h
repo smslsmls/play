@@ -9,6 +9,8 @@ public:
 
 };
 
-int main() {
+int tetris_main() {
 
+
+	return 0;
 }

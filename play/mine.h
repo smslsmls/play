@@ -379,11 +379,3 @@ public:
 
 	}
 };
-
-find_mine m;
-
-int mine_main(void) {
-	m.start();
-
-	return 0;
-}

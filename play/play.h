@@ -80,15 +80,3 @@ public:
 	}
 	
 };
-
-profiles profile;
-bitwise_calculator bit;
-
-int play_main() {
-
-
-
-	profile.init("Youn Seo Joon", 17, "motto", "Deagu Software meister highschool");
-	profile.show();
-	return 0;
-}
