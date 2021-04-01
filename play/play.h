@@ -74,9 +74,6 @@ public:
 		bi1 = b1;
 		bi2 = b2;
 		setsize();
-		switch (oper) {
-
-		}
 	}
 	
 };
