@@ -27,6 +27,5 @@ int main() {
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 	cout.tie(0);
-	RPG.map_select.select_selection();
-	RPG.title_select.select_selection();
+	RPG.game();
 }
