@@ -132,6 +132,7 @@ enum enum_rarity {
 	CONTRABAND,
 	UNOBTAINABLE
 };
+//무기
 enum weapons {
 	//레이피어
 	//에페
@@ -217,6 +218,7 @@ enum weapons {
 	//대장장이의 망치
 	BLACKSMITHHAMMER
 };
+//무기 스텟
 weapon_status weapons_status[] = {
 	{
 		"에페",UNCOMMON,0,{}
