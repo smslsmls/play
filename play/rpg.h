@@ -51,7 +51,7 @@ enum job_classes {
 	//물리
 	//레이피어
 	DUELER = 0,//0
-	//검, 월도, 치도, 글러브
+	//검, 월도, 글러브
 	FIGHTER,//1
 	//단검, 비수
 	ASSASSIN,//2
@@ -132,7 +132,6 @@ enum enum_rarity {
 	CONTRABAND,
 	UNOBTAINABLE
 };
-//무기
 enum weapons {
 	//레이피어
 	//에페
@@ -166,6 +165,14 @@ enum weapons {
 	CLAYMORE,
 	//프람베르그
 	FLAMBERGE,
+	//마체테
+	MACHETE,
+	//시미터
+	SCIMITAR,
+	//쿠크리
+	KUKRI,
+	//팔시온, 펄션
+	FALCHION,
 	//마법검
 	//티르빙
 	TYRFINGR,
@@ -189,15 +196,6 @@ enum weapons {
 	TRIAINA,
 	//트리슈라(인도의 파괴의 신 시바의 창)
 	TRIDENT,
-	//치도
-	//마체테
-	MACHETE,
-	//시미터
-	SCIMITAR,
-	//쿠크리
-	KUKRI,
-	//팔시온, 펄션
-	FALCHION,
 	//대검
 	//드래곤슬레이어
 	DRAGONSLAYER,
@@ -219,6 +217,12 @@ enum weapons {
 	//대장장이의 망치
 	BLACKSMITHHAMMER
 };
+weapon_status weapons_status[] = {
+	{
+		"에페",UNCOMMON,0,{}
+
+}
+}
 //랜덤확률   0<per<1
 bool random(double per) {
 	if (per <= 0)
