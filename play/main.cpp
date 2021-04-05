@@ -6,6 +6,7 @@
 #include"tetris.h"
 #include"play.h"
 #include"rpg.h"
+#include"yacht.h"
 using namespace std;
 
 find_mine m;
@@ -13,6 +14,7 @@ _2048 _2_0_4_8;
 tetris te;
 profiles profile;
 rpg RPG;
+yacht_game yacht;
 void keyboardtest() {
 	int t;
 	while (1) {
@@ -24,5 +26,7 @@ void keyboardtest() {
 }
 
 int main() {
-	RPG.game();
+	//RPG.game();
+	yacht.game();
+	//keyboardtest();
 }
