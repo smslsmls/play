@@ -1,11 +1,11 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include<bits/stdc++.h>
 #include<conio.h>
-#include"rpg.h"
-#include"2048.h"
 #include"mine.h"
-#include"play.h"
+#include"2048.h"
 #include"tetris.h"
+#include"play.h"
+#include"rpg.h"
 using namespace std;
 
 find_mine m;

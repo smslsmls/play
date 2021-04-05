@@ -223,7 +223,7 @@ weapon_status weapons_status[] = {
 		"¿¡Æä",UNCOMMON,0,{}
 
 }
-}
+};
 //·£´ýÈ®·ü   0<per<1
 bool random(double per) {
 	if (per <= 0)
