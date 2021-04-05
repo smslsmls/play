@@ -7,7 +7,6 @@ enum debuffs;
 enum enum_rarity;
 enum weapons;
 class stat_struct;
-bool random(double per);
 class select_class;
 class player;
 class rpg;
