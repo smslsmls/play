@@ -13,12 +13,12 @@ class rpg;
 //스탯
 class stat_struct {
 public:
-	unsigned short STR = 0;//물공 hp 2 atk 3
-	unsigned short INT = 0;//마공 mp 5
-	unsigned short WIS = 0;//마나 mp 3 hp 2
-	unsigned short DEX = 0;//방어력 def 3 hp 2
-	unsigned short AGI = 0;//민첩성 atk 1 cri 4
-	unsigned short VIT = 0;//체력 hp 4 def 1
+	unsigned int STR = 0;//물공 hp 2 atk 3
+	unsigned int INT = 0;//마공 mp 5
+	unsigned int WIS = 0;//마나 mp 3 hp 2
+	unsigned int DEX = 0;//방어력 def 3 hp 2
+	unsigned int AGI = 0;//민첩성 atk 1 cri 4 cri_per 0.5
+	unsigned int VIT = 0;//체력 hp 4 def 1
 };
 //무기 성능
 typedef struct {
@@ -29,11 +29,12 @@ typedef struct {
 }weapon_status;
 //스테이터스
 typedef struct {
-	int hp;
-	int mp;
-	int atk;
-	int def;
-	int cri;
+	unsigned long long hp;
+	unsigned long long mp;
+	unsigned long long atk;
+	unsigned long long def;
+	unsigned long long cri;
+	unsigned long double cri_per;
 }status;
 //선택지 구조체
 typedef struct {
@@ -101,8 +102,8 @@ enum buffs {
 };
 //디버프
 enum debuffs {
-	//독
-	POISON = 0,
+	//독1%
+	POISON,
 	//약화(공격력 저하)
 	WEAKNESS,
 	//방어력저하
@@ -129,7 +130,8 @@ enum enum_rarity {
 	LEGENDARY,
 	RELIC,
 	CONTRABAND,
-	UNOBTAINABLE
+	UNOBTAINABLE,
+	ONLYSTAFF
 };
 //무기
 enum weapons {
@@ -219,10 +221,7 @@ enum weapons {
 };
 //무기 스텟
 weapon_status weapons_status[] = {
-	{
-		"에페",UNCOMMON,0,{}
-
-}
+	{"에페",UNCOMMON,0,{8,0,0,0,12,0}}
 };
 //랜덤확률   0<per<1
 bool random(double per) {
@@ -422,8 +421,8 @@ private:
 	stat_struct statistics;
 	status basic_stat;
 	status stat;
-	buffs buff;
-	debuffs debuff;
+	vector<buffs> buff;
+	vector<debuffs> debuff;
 protected:
 
 public:
@@ -433,6 +432,7 @@ public:
 		stat.atk = basic_stat.atk + statistics.STR * 3 + statistics.AGI;
 		stat.def = basic_stat.def + statistics.DEX * 3 + statistics.VIT;
 		stat.cri = basic_stat.cri + statistics.AGI * 4;
+		stat.cri_per = basic_stat.cri_per + statistics.AGI * 0.5;
 	}
 };
 

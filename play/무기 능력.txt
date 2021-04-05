@@ -6,8 +6,9 @@ LEGENDARY : 100
 RELIC : 150
 CONTRABAND : 200
 UNOBTAINABLE : 300
+ONLYSTAFF : infinity
 
-레이피어류 민첩 공격 체력
+레이피어류 민첩 공격
 검류 공격 방어 민첩 체력
 마법검류 공격 마나 민첩 체력
 단검류 민첩 공격
