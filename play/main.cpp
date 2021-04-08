@@ -3,14 +3,14 @@
 #include<conio.h>
 #include"mine.h"
 #include"2048.h"
-#include"tetris.h"
+#include"my_tetris.h"
 #include"play.h"
 #include"rpg.h"
 #include"yacht.h"
 using namespace std;
 
 find_mine m;
-_2048 _2_0_4_8;
+_2048 _2048_;
 tetris te;
 profiles profile;
 rpg RPG;
@@ -26,7 +26,8 @@ void keyboardtest() {
 }
 
 int main() {
+	m.start();
 	//RPG.game();
-	yacht.game();
+	//yacht.game();
 	//keyboardtest();
 }
