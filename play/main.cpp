@@ -7,6 +7,8 @@
 #include"play.h"
 #include"rpg.h"
 #include"yacht.h"
+#include"1-20code.h"
+#include"mouseinput.h"
 using namespace std;
 
 find_mine m;
@@ -26,8 +28,9 @@ void keyboardtest() {
 }
 
 int main() {
-	m.start();
+	//m.start();
 	//RPG.game();
 	//yacht.game();
 	//keyboardtest();
+	mouseinput();
 }

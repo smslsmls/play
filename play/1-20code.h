@@ -23,7 +23,7 @@ void print(const char* str) {
 	}
 	printf("\n");
 }
-int main() {
+int _1_20_main() {
 	system("cls");
 	int next = 0;
 	int ans6 = 0;
