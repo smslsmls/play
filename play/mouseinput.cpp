@@ -42,7 +42,7 @@ int get_input(WORD* vkey, COORD* pos)
     return 0;
 }
 
-void gotoxy(int x, int y)      // 좌표 보내기 gotoxy
+void mgotoxy(int x, int y)      // 좌표 보내기 gotoxy
 {
     COORD Cur;
     Cur.X = x;
@@ -76,7 +76,7 @@ void mouseinput()
                 MOUSE_EVENT;
                 x = pos.X;    // 마우스클릭값이 x,y변수에 저장되도록함
                 y = pos.Y;
-                gotoxy(x, y);
+                mgotoxy(x, y);
                 printf("*");
             }
         }

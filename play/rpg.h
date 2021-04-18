@@ -13,3 +13,4 @@ class select_class;
 class player;
 class rpg;
 bool random(double per);
+void rpg_start();

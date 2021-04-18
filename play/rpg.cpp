@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 #include<conio.h>
+#include"rpg.h"
 using namespace std;
 //Ω∫≈»
 class stat_struct {
@@ -511,3 +512,8 @@ public:
 		}
 	}
 };
+
+void rpg_start() {
+	rpg RPG;
+	RPG.game();
+}

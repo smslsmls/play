@@ -307,3 +307,8 @@ public:
 		}
 	}
 };
+
+void yacht_start() {
+	yacht_game yacht;
+	yacht.game();
+}

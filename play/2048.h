@@ -4,3 +4,5 @@
 using namespace std;
 
 class _2048;
+
+void _2048_start();

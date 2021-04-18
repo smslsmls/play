@@ -13,12 +13,6 @@
 #define stop 27
 #define reset 122
 
-typedef struct block_xy
-{
-    int x;
-    int y;
-}block_xy;
-
 //데이터를 처리해줄 배경 메모리 선언  
 int n = 0;
 
@@ -38,7 +32,7 @@ block_xy block[19][4] = { {{-1,0},{0,0},{1,0},{2,0}}, {{0,-1}, {0,0},{0,1},{0,2}
     //1가지의 모습을 갖는 블록  
     {{0,-1},{0,0},{1,-1},{1,0}} };
 
-void gotoxy(int x, int y);
+void tgotoxy(int x, int y);
 void mouse();
 
 //배경 출력
@@ -66,7 +60,7 @@ void esc_remove();
 
 void key_check();
 
-int tetris_main()
+int tetris_start()
 {
     mouse();   //마우스 모양 바꿔주기  
 
@@ -122,7 +116,7 @@ int tetris_main()
     return 0;
 }
 //도스창에서 커서를 이동시켜주는  함수 
-void gotoxy(int x, int y)
+void tgotoxy(int x, int y)
 {
     COORD Pos = { x - 1, y - 1 };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
@@ -140,7 +134,7 @@ void print_background()
 {
     for (int i = 0; i < 13; i++)
     {
-        gotoxy(i * 2 + 1, 21);
+        tgotoxy(i * 2 + 1, 21);
         printf("□");
         background[i][20] = 1;
     }
@@ -148,7 +142,7 @@ void print_background()
     {
         for (int j = 0; j < 21; j++)
         {
-            gotoxy(i * 2 + 1, j + 1);
+            tgotoxy(i * 2 + 1, j + 1);
             printf("□");
             background[i][j] = 1;
         }
@@ -165,7 +159,7 @@ void block_start(block_xy start_xy, int* block_type)
     if (chack == 1)
     {
         system("cls");
-        gotoxy(1, 9);
+        tgotoxy(1, 9);
         printf("=============게임 오버=============\n");
         printf("===========현재 점수 : %d=========\n\n\n\n\n\n\n", score);
         Sleep(1000);
@@ -211,7 +205,7 @@ void block_print(block_xy start_xy, int* block_type) {
 
         if (chack.y >= 0)
         {
-            gotoxy(chack.x * 2 + 1, chack.y + 1);
+            tgotoxy(chack.x * 2 + 1, chack.y + 1);
             printf("■");
         }
     }
@@ -226,7 +220,7 @@ void block_delete(block_xy start_xy, int* block_type)
     {
         chack.x = block[*block_type][i].x + start_xy.x;
         chack.y = block[*block_type][i].y + start_xy.y;
-        gotoxy(chack.x * 2 + 1, chack.y + 1);
+        tgotoxy(chack.x * 2 + 1, chack.y + 1);
         printf("  ");
     }
 }
@@ -420,13 +414,13 @@ block_xy block_move(block_xy start_xy, int* block_type)
                 }
                 break;
             case stop:
-                gotoxy(3, 25);
+                tgotoxy(3, 25);
                 printf("일시정지 합니다.\n\n");
                 system("PAUSE");
                 break;
             case ' ':
                 system("cls");
-                gotoxy(1, 9);
+                tgotoxy(1, 9);
                 printf("=============게임 오버=============\n");
                 printf("===========현재 점수 : %d=========\n\n\n\n\n\n\n", score);
                 Sleep(1000);
@@ -440,7 +434,7 @@ block_xy block_move(block_xy start_xy, int* block_type)
                         for (int t = i; t > 1; t--)
                         {
                             background[j][t] = 0;
-                            gotoxy(j * 2 + 1, t + 1);
+                            tgotoxy(j * 2 + 1, t + 1);
                             printf("  ");
                         }
                     }
@@ -475,7 +469,7 @@ void line_chack_and_remove() {
                 for (int t = i; t > 1; t--)
                 {
                     background[j][t] = background[j][t - 1];
-                    gotoxy(j * 2 + 1, t + 1);
+                    tgotoxy(j * 2 + 1, t + 1);
 
                     if (background[j][t] == 1)
                     {
@@ -494,7 +488,7 @@ void line_chack_and_remove() {
                 time_count -= stack;
                 stack -= 10;
             }*/
-            gotoxy(30, 21);
+            tgotoxy(30, 21);
             printf(" 현제 점수 : %d", score);
         }
     }
@@ -504,217 +498,217 @@ void next_block(block_xy start_xy, int* next_type)
 {
     if (*next_type == 0)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("■■■■");
     }
     else if (*next_type == 1)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("■");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■");
-        gotoxy(34, 7);
+        tgotoxy(34, 7);
         printf("■");
-        gotoxy(34, 8);
+        tgotoxy(34, 8);
         printf("■");
 
     }
     else if (*next_type == 2)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("■  ");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■■  ");
-        gotoxy(34, 7);
+        tgotoxy(34, 7);
         printf("  ■  ");
     }
     else if (*next_type == 3)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("  ■■");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■■  ");
     }
     else if (*next_type == 4)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("  ■");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■■");
-        gotoxy(34, 7);
+        tgotoxy(34, 7);
         printf("■  ");
     }
     else if (*next_type == 5)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("■■  ");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("  ■■");
     }
     else if (*next_type == 6)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("■    ");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■    ");
-        gotoxy(34, 7);
+        tgotoxy(34, 7);
         printf("■■  ");
     }
     else if (*next_type == 7)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("■■■");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■    ");
     }
     else if (*next_type == 8)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("  ■■");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("    ■");
-        gotoxy(34, 7);
+        tgotoxy(34, 7);
         printf("    ■");
     }
     else if (*next_type == 9)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("    ■");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■■■");
     }
     else if (*next_type == 10)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("    ■");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("    ■");
-        gotoxy(34, 7);
+        tgotoxy(34, 7);
         printf("  ■■");
     }
     else if (*next_type == 11)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("■    ");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■■■");
     }
     else if (*next_type == 12)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("■■  ");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■    ");
-        gotoxy(34, 7);
+        tgotoxy(34, 7);
         printf("■    ");
     }
     else if (*next_type == 13)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("■■■");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("    ■");
     }
     else if (*next_type == 14)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("  ■  ");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■■■");
     }
     else if (*next_type == 15)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("  ■  ");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("  ■■");
-        gotoxy(34, 7);
+        tgotoxy(34, 7);
         printf("  ■  ");
     }
     else if (*next_type == 16)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("■■■");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("  ■  ");
     }
     else if (*next_type == 17)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("  ■  ");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■■  ");
-        gotoxy(34, 7);
+        tgotoxy(34, 7);
         printf("  ■  ");
     }
     else if (*next_type == 18)
     {
-        gotoxy(34, 5);
+        tgotoxy(34, 5);
         printf("■■");
-        gotoxy(34, 6);
+        tgotoxy(34, 6);
         printf("■■");
     }
 }
 
 void clear_next_block()
 {
-    gotoxy(32, 5);
+    tgotoxy(32, 5);
     printf("          ");
-    gotoxy(32, 6);
+    tgotoxy(32, 6);
     printf("          ");
-    gotoxy(32, 7);
+    tgotoxy(32, 7);
     printf("          ");
-    gotoxy(32, 8);
+    tgotoxy(32, 8);
     printf("          ");
 }
 
 void esc_remove()
 {
 
-    gotoxy(3, 25);
+    tgotoxy(3, 25);
     printf("                   ");
-    gotoxy(1, 27);
+    tgotoxy(1, 27);
     printf("                                       ");
 }
 
 void key_check()
 {
-    gotoxy(30, 12);
+    tgotoxy(30, 12);
     printf("|------------------------|------------------------|");
-    gotoxy(30, 13);
+    tgotoxy(30, 13);
     printf("|↓: 블록 아래쪽으로 이동|    esc   : 일시정지");
-    gotoxy(30, 14);
+    tgotoxy(30, 14);
     printf("|------------------------|------------------------|");
-    gotoxy(30, 15);
+    tgotoxy(30, 15);
     printf("|   a : 블록 모양 변경   |    space : 강제종료");
-    gotoxy(30, 16);
+    tgotoxy(30, 16);
     printf("|------------------------|------------------------|");
-    gotoxy(30, 17);
+    tgotoxy(30, 17);
     printf("|   s : 블록 떨어뜨리기  |    z     : 리셋");
-    gotoxy(30, 18);
+    tgotoxy(30, 18);
     printf("|------------------------|------------------------|");
-    gotoxy(30, 21);
+    tgotoxy(30, 21);
     printf(" 현재 점수 : %d", score);
 }
 
 void next_block_background()
 {
-    gotoxy(32, 2);
+    tgotoxy(32, 2);
     printf("다음 블럭");
-    gotoxy(30, 3);
+    tgotoxy(30, 3);
     printf("□□□□□□□□");
-    gotoxy(30, 4);
+    tgotoxy(30, 4);
     printf("□            □");
-    gotoxy(30, 5);
+    tgotoxy(30, 5);
     printf("□            □");
-    gotoxy(30, 6);
+    tgotoxy(30, 6);
     printf("□            □");
-    gotoxy(30, 7);
+    tgotoxy(30, 7);
     printf("□            □");
-    gotoxy(30, 8);
+    tgotoxy(30, 8);
     printf("□            □");
-    gotoxy(30, 9);
+    tgotoxy(30, 9);
     printf("□            □");
-    gotoxy(30, 10);
+    tgotoxy(30, 10);
     printf("□□□□□□□□");
 }

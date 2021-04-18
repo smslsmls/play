@@ -76,5 +76,4 @@ public:
 		bi2 = b2;
 		setsize();
 	}
-	
 };

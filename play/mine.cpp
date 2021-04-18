@@ -380,3 +380,8 @@ public:
 
 	}
 };
+
+void mine_start() {
+	find_mine mine;
+	mine.start();
+}
