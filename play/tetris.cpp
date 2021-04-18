@@ -3,6 +3,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include<conio.h>
+#include"tetris.h"
 
 #define left 75
 #define right 77
@@ -65,7 +66,7 @@ void esc_remove();
 
 void key_check();
 
-int main()
+int tetris_main()
 {
     mouse();   //마우스 모양 바꿔주기  
 

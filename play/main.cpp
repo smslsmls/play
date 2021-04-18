@@ -3,7 +3,6 @@
 #include<conio.h>
 #include"mine.h"
 #include"2048.h"
-#include"my_tetris.h"
 #include"play.h"
 #include"rpg.h"
 #include"yacht.h"
