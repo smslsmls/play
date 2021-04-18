@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="play.cpp" />
     <ClCompile Include="mine.cpp" />
     <ClCompile Include="2048.cpp" />
     <ClCompile Include="rpg.cpp" />
@@ -148,6 +147,7 @@
     <ClCompile Include="1-20code.cpp" />
     <ClCompile Include="tetris.cpp" />
     <ClCompile Include="mouseinput.cpp" />
+    <!--<ClCompile Include="test.cpp" />-->
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

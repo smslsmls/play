@@ -31,6 +31,6 @@ int main() {
 	//yacht_start();
 	//_1_20_main();
 	//tetris_start();
-	//mouseinput();
-	keyboardtest();
+	mouseinput();
+	//keyboardtest();
 }
