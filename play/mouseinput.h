@@ -1,83 +1,152 @@
-#include <stdio.h> 
-#include <Windows.h>
+#include <windows.h>
+#include <tchar.h>
+#include <stdio.h>
 
+HANDLE hStdin;
+DWORD fdwSaveOldMode;
 
-HANDLE COUT = 0;    // 콘솔 출력 장치
-HANDLE CIN = 0;        // 콘솔 입력 장치
+VOID ErrorExit(LPCSTR);
+VOID KeyEventProc(KEY_EVENT_RECORD);
+VOID MouseEventProc(MOUSE_EVENT_RECORD);
+VOID ResizeEventProc(WINDOW_BUFFER_SIZE_RECORD);
 
-int be_input()
+int mouseinput(VOID)
 {
-    INPUT_RECORD input_record;
-    DWORD input_count;
+    DWORD cNumRead, fdwMode, i;
+    INPUT_RECORD irInBuf[128];
+    int counter = 0;
 
-    PeekConsoleInput(CIN, &input_record, 1, &input_count);
-    return input_count;
-}
+    // Get the standard input handle. 
 
-int get_input(WORD* vkey, COORD* pos)
-{
-    INPUT_RECORD input_record;
-    DWORD input_count;
+    hStdin = GetStdHandle(STD_INPUT_HANDLE);
+    if (hStdin == INVALID_HANDLE_VALUE)
+        ErrorExit("GetStdHandle");
 
-    ReadConsoleInput(CIN, &input_record, 1, &input_count);
-    switch (input_record.EventType) {
-    case MOUSE_EVENT:
-        if (pos && (input_record.Event.MouseEvent.dwButtonState & FROM_LEFT_1ST_BUTTON_PRESSED)) {
-            CONSOLE_SCREEN_BUFFER_INFO csbi;
+    // Save the current input mode, to be restored on exit. 
 
-            GetConsoleScreenBufferInfo(COUT, &csbi);
+    if (!GetConsoleMode(hStdin, &fdwSaveOldMode))
+        ErrorExit("GetConsoleMode");
 
-            *pos = input_record.Event.MouseEvent.dwMousePosition;
-            pos->X -= csbi.srWindow.Left;
-            pos->Y -= csbi.srWindow.Top;
+    // Enable the window and mouse input events. 
 
-            return MOUSE_EVENT;
-        }
-        break;
+    fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT | ENABLE_INSERT_MODE | ENABLE_EXTENDED_FLAGS;
+    if (!SetConsoleMode(hStdin, fdwMode))
+        ErrorExit("SetConsoleMode");
 
-    }
+    // Loop to read and handle the next 500 input events. 
 
-    //    FlushConsoleInputBuffer(CIN);
-    return 0;
-}
-
-void gotoxy(int x, int y)      // 좌표 보내기 gotoxy
-{
-    COORD Cur;
-    Cur.X = x;
-    Cur.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Cur);
-}
-
-void mouseinput()
-{
-    DWORD mode;
-    WORD key;
-    COORD pos;
-
-    int event;        // 마우스 이벤트에 이용
-    int x;            // 마우스의 x좌표 저장소
-    int y;            // 마우스의 y좌표 저장소
-
-    CIN = GetStdHandle(STD_INPUT_HANDLE);
-    COUT = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    // 마우스 활성화
-    GetConsoleMode(CIN, &mode);
-    SetConsoleMode(CIN, mode | ENABLE_MOUSE_INPUT);
-
-    while (1)
+    while (counter++ <= 500)
     {
-        if (be_input())
+        // Wait for the events. 
+
+        if (!ReadConsoleInput(
+            hStdin,      // input buffer handle 
+            irInBuf,     // buffer to read into 
+            128,         // size of read buffer 
+            &cNumRead)) // number of records read 
+            ErrorExit("ReadConsoleInput");
+
+        // Dispatch the events to the appropriate handler. 
+
+        for (i = 0; i < cNumRead; i++)
         {
-            if (get_input(&key, &pos) != 0)
+            switch (irInBuf[i].EventType)
             {
-                MOUSE_EVENT;
-                x = pos.X;    // 마우스클릭값이 x,y변수에 저장되도록함
-                y = pos.Y;
-                gotoxy(x, y);
-                printf("*");
+            case KEY_EVENT: // keyboard input 
+                KeyEventProc(irInBuf[i].Event.KeyEvent);
+                break;
+
+            case MOUSE_EVENT: // mouse input 
+                MouseEventProc(irInBuf[i].Event.MouseEvent);
+                break;
+
+            case WINDOW_BUFFER_SIZE_EVENT: // scrn buf. resizing 
+                ResizeEventProc(irInBuf[i].Event.WindowBufferSizeEvent);
+                break;
+
+            case FOCUS_EVENT:  // disregard focus events 
+
+            case MENU_EVENT:   // disregard menu events 
+                break;
+
+            default:
+                ErrorExit("Unknown event type");
+                break;
             }
         }
     }
+
+    // Restore input mode on exit.
+
+    SetConsoleMode(hStdin, fdwSaveOldMode);
+
+    return 0;
+}
+
+VOID ErrorExit(LPCSTR lpszMessage)
+{
+    fprintf(stderr, "%s\n", lpszMessage);
+
+    // Restore input mode on exit.
+
+    SetConsoleMode(hStdin, fdwSaveOldMode);
+
+    ExitProcess(0);
+}
+
+VOID KeyEventProc(KEY_EVENT_RECORD ker)
+{
+    printf("Key event: ");
+
+    if (ker.bKeyDown)
+        printf("key pressed\n");
+    else printf("key released\n");
+}
+
+VOID MouseEventProc(MOUSE_EVENT_RECORD mer)
+{
+#ifndef MOUSE_HWHEELED
+#define MOUSE_HWHEELED 0x0008
+#endif
+    printf("Mouse event: ");
+
+    switch (mer.dwEventFlags)
+    {
+    case 0:
+
+        if (mer.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+        {
+            printf("left button press \n");
+        }
+        else if (mer.dwButtonState == RIGHTMOST_BUTTON_PRESSED)
+        {
+            printf("right button press \n");
+        }
+        else
+        {
+            printf("button press\n");
+        }
+        break;
+    case DOUBLE_CLICK:
+        printf("double click\n");
+        break;
+    case MOUSE_HWHEELED:
+        printf("horizontal mouse wheel\n");
+        break;
+    case MOUSE_MOVED:
+        printf("mouse moved\n");
+        break;
+    case MOUSE_WHEELED:
+        printf("vertical mouse wheel\n");
+        break;
+    default:
+        printf("unknown\n");
+        break;
+    }
+}
+
+VOID ResizeEventProc(WINDOW_BUFFER_SIZE_RECORD wbsr)
+{
+    printf("Resize event\n");
+    printf("Console screen buffer is %d columns by %d rows.\n", wbsr.dwSize.X, wbsr.dwSize.Y);
 }
