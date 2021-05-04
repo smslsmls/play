@@ -8,6 +8,7 @@
 #include"1-20code.h"
 #include"mouseinput.h"
 #include"tetris.h"
+#pragma warning(disable:4996)
 using namespace std;
 
 //find_mine m;
@@ -59,7 +60,7 @@ void input_test() {
 }
 
 int main() {
-	mine_start();
+	//mine_start();
 	//_2048_start();
 	//rpg_start();
 	//yacht_start();
