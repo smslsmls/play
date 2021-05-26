@@ -70,8 +70,8 @@ int main() {
 	//rpg_start();
 	//yacht_start();
 	//_1_20_main();
-	//tetris_start();
+	tetris_start();
 	//mouseinput();
 	//input_test();
-	test();
+//	test();
 }

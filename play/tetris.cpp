@@ -8,6 +8,7 @@
 #define left 75
 #define right 77
 #define down 80
+#define up 72
 #define full_down 115
 #define change 97
 #define stop 27
@@ -314,7 +315,7 @@ block_xy block_move(block_xy start_xy, int* block_type)
                 }
                 break;
 
-            case 's':
+            case ' ':
                 while (1)
                 {
                     start_xy.y++;
@@ -337,7 +338,7 @@ block_xy block_move(block_xy start_xy, int* block_type)
                 }
                 break;
 
-            case  'a':
+            case  up:
                 if (*block_type >= 0 && *block_type <= 5)
                 {
                     if (*block_type % 2 == 1)
@@ -418,7 +419,7 @@ block_xy block_move(block_xy start_xy, int* block_type)
                 printf("일시정지 합니다.\n\n");
                 system("PAUSE");
                 break;
-            case ' ':
+            case 's':
                 system("cls");
                 tgotoxy(1, 9);
                 printf("=============게임 오버=============\n");
