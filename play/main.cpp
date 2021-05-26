@@ -59,6 +59,11 @@ void input_test() {
 	}
 }
 
+void test() {
+	string str = "ÇÑ±Û";
+	cout << str.size();
+}
+
 int main() {
 	//mine_start();
 	//_2048_start();
@@ -68,4 +73,5 @@ int main() {
 	//tetris_start();
 	//mouseinput();
 	//input_test();
+	test();
 }
