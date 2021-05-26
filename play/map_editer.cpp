@@ -10,63 +10,49 @@ VOID KeyEventProc(KEY_EVENT_RECORD);
 VOID MouseEventProc(MOUSE_EVENT_RECORD);
 VOID ResizeEventProc(WINDOW_BUFFER_SIZE_RECORD);
 
+int map[30][30];
+
 int mouseinput()
 {
     DWORD cNumRead, fdwMode, i;
     INPUT_RECORD irInBuf[128];
     int counter = 0;
 
-    // Get the standard input handle. 
-
     hStdin = GetStdHandle(STD_INPUT_HANDLE);
     if (hStdin == INVALID_HANDLE_VALUE)
         ErrorExit("GetStdHandle");
 
-    // Save the current input mode, to be restored on exit. 
-
     if (!GetConsoleMode(hStdin, &fdwSaveOldMode))
         ErrorExit("GetConsoleMode");
-
-    // Enable the window and mouse input events. 
 
     fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT | ENABLE_INSERT_MODE | ENABLE_EXTENDED_FLAGS;
     if (!SetConsoleMode(hStdin, fdwMode))
         ErrorExit("SetConsoleMode");
 
-    // Loop to read and handle the next 500 input events. 
-
-    while (counter++ <= 500)
+    while (1)
     {
-        // Wait for the events. 
 
         if (!ReadConsoleInput(
-            hStdin,      // input buffer handle 
-            irInBuf,     // buffer to read into 
-            128,         // size of read buffer 
-            &cNumRead)) // number of records read 
+            hStdin,    
+            irInBuf,   
+            128,       
+            &cNumRead))
             ErrorExit("ReadConsoleInput");
-
-        // Dispatch the events to the appropriate handler. 
 
         for (i = 0; i < cNumRead; i++)
         {
             switch (irInBuf[i].EventType)
             {
-            case KEY_EVENT: // keyboard input 
+            case KEY_EVENT:
                 KeyEventProc(irInBuf[i].Event.KeyEvent);
                 break;
 
-            case MOUSE_EVENT: // mouse input 
+            case MOUSE_EVENT:
                 MouseEventProc(irInBuf[i].Event.MouseEvent);
                 break;
 
-            case WINDOW_BUFFER_SIZE_EVENT: // scrn buf. resizing 
+            case WINDOW_BUFFER_SIZE_EVENT
                 ResizeEventProc(irInBuf[i].Event.WindowBufferSizeEvent);
-                break;
-
-            case FOCUS_EVENT:  // disregard focus events 
-
-            case MENU_EVENT:   // disregard menu events 
                 break;
 
             default:
@@ -76,8 +62,6 @@ int mouseinput()
         }
     }
 
-    // Restore input mode on exit.
-
     SetConsoleMode(hStdin, fdwSaveOldMode);
 
     return 0;
@@ -86,8 +70,6 @@ int mouseinput()
 VOID ErrorExit(LPCSTR lpszMessage)
 {
     fprintf(stderr, "%s\n", lpszMessage);
-
-    // Restore input mode on exit.
 
     SetConsoleMode(hStdin, fdwSaveOldMode);
 
