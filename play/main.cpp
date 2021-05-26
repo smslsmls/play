@@ -8,6 +8,7 @@
 #include"1-20code.h"
 #include"mouseinput.h"
 #include"tetris.h"
+#include"map_editer.h"
 #pragma warning(disable:4996)
 using namespace std;
 
@@ -72,6 +73,7 @@ int main() {
 	//_1_20_main();
 	//tetris_start();
 	//mouseinput();
-	input_test();
-//	test();
+	//input_test();
+	//test();
+	map_editer();
 }
