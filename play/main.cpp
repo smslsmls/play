@@ -30,7 +30,7 @@ void input_test() {
 			{
 			case KEY_EVENT:
 				if (input_buf[i].Event.KeyEvent.bKeyDown)
-					printf("%c\n", input_buf[i].Event.KeyEvent.uChar.AsciiChar);
+					printf("%d\n", input_buf[i].Event.KeyEvent.uChar.AsciiChar);
 				break;
 			case MOUSE_EVENT:
 				switch (input_buf[i].Event.MouseEvent.dwEventFlags)
@@ -70,8 +70,8 @@ int main() {
 	//rpg_start();
 	//yacht_start();
 	//_1_20_main();
-	tetris_start();
+	//tetris_start();
 	//mouseinput();
-	//input_test();
+	input_test();
 //	test();
 }
