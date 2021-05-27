@@ -21,6 +21,7 @@ int ch = 0;
 
 void map_print();
 void clear();
+void CursorView(char);
 
 int map_editer()
 {
@@ -51,6 +52,7 @@ int map_editer()
 		Error("SetConsoleMode");
 
 	system("cls");
+	CursorView(0);
 	map_print();
 
 	while (con)
@@ -202,4 +204,14 @@ void clear() {
 				map[i][j] = 0;
 		}
 	}
+}
+
+void CursorView(char show)
+{
+	CONSOLE_CURSOR_INFO ConsoleCursor;
+
+	ConsoleCursor.bVisible = show;
+	ConsoleCursor.dwSize = 1;
+
+	SetConsoleCursorInfo(h_output, &ConsoleCursor);
 }
