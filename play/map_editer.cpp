@@ -4,11 +4,12 @@
 #include"map_editer.h"
 using namespace std;
 
-HANDLE h_input;
-HANDLE h_output;
+HANDLE h_input, h_output;
 DWORD console_old_mode;
+DWORD fdwMode;
 COORD zero;
 COORD position;
+COORD player, finish;
 
 VOID Error(LPCSTR);
 
@@ -25,12 +26,16 @@ int map_editer()
 {
 	zero.X = 0;
 	zero.Y = 0;
-	DWORD cNumRead, fdwMode;
+	player.X = -1;
+	player.Y = -1;
+	finish.X = -1;
+	finish.Y = -1;
+	DWORD cNumRead;
 	INPUT_RECORD irInBuf[128];
 	int counter = 0;
 
 	h_input = GetStdHandle(STD_INPUT_HANDLE);
-	h_output = GetStdHandle(STD_INPUT_HANDLE);
+	h_output = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (h_input == INVALID_HANDLE_VALUE || h_output == INVALID_HANDLE_VALUE)
 		Error("GetStdHandle");
 
@@ -44,6 +49,9 @@ int map_editer()
 	fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT | ENABLE_INSERT_MODE | ENABLE_EXTENDED_FLAGS;
 	if (!SetConsoleMode(h_input, fdwMode))
 		Error("SetConsoleMode");
+
+	system("cls");
+	map_print();
 
 	while (con)
 	{
@@ -64,6 +72,10 @@ int map_editer()
 			case KEY_EVENT:
 				if (irInBuf[i].Event.KeyEvent.uChar.AsciiChar == 13)
 					con = 0;
+				if (irInBuf[i].Event.KeyEvent.uChar.AsciiChar == 99) {
+					clear();
+					map_print();
+				}
 				break;
 
 			case MOUSE_EVENT:
@@ -81,17 +93,35 @@ int map_editer()
 					else if (irInBuf[i].Event.MouseEvent.dwButtonState == RIGHTMOST_BUTTON_PRESSED)
 					{
 						if (ch) {
-							if (map[position.Y][position.X / 2] == 9)
+							if (map[position.Y][position.X / 2] == 9) {
 								map[position.Y][position.X / 2] = 0;
-							else
+								finish.X = -1;
+								finish.Y = -1;
+							}
+							else {
+								if (finish.X != -1) {
+									map[finish.Y][finish.X] = 0;
+								}
 								map[position.Y][position.X / 2] = 9;
+								finish.X = position.X / 2;
+								finish.Y = position.Y;
+							}
 							ch = !ch;
 						}
 						else {
-							if (map[position.Y][position.X / 2] == 1)
+							if (map[position.Y][position.X / 2] == 1) {
 								map[position.Y][position.X / 2] = 0;
-							else
+								player.X = -1;
+								player.Y = -1;
+							}
+							else {
+								if (finish.X != -1) {
+									map[player.Y][player.X] = 0;
+								}
 								map[position.Y][position.X / 2] = 1;
+								player.X = position.X / 2;
+								player.Y = position.Y;
+							}
 							ch = !ch;
 						}
 					}
@@ -104,6 +134,25 @@ int map_editer()
 	}
 
 	SetConsoleMode(h_input, console_old_mode);
+
+	SetConsoleTextAttribute(h_output, 7);
+
+	SetConsoleCursorPosition(h_output, zero);
+	system("cls");
+	cout << "{";
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < M; j++)
+		{
+			if (i == N - 1 && j == M - 1)
+				break;
+			cout << map[i][j] << ",";
+		}
+		if (i == N - 1)
+			break;
+		cout << "\n ";
+	}
+	cout << map[N - 1][M - 1] << "}";
 
 	return 0;
 }
@@ -118,6 +167,7 @@ VOID Error(LPCSTR lpszMessage)
 }
 
 void map_print() {
+	SetConsoleMode(h_input, console_old_mode);
 	for (int i = 0; i < N; i++)
 	{
 		SetConsoleCursorPosition(h_output, zero);
@@ -138,6 +188,7 @@ void map_print() {
 		zero.Y++;
 	}
 	zero.Y = 0;
+	SetConsoleMode(h_input, fdwMode);
 }
 
 void clear() {
