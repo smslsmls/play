@@ -61,8 +61,7 @@ void input_test() {
 }
 
 void test() {
-	string str = "ÇÑ±Û";
-	cout << str.size();
+	fprintf(stderr, "%s\n", "test");
 }
 
 int main() {
@@ -74,6 +73,6 @@ int main() {
 	//tetris_start();
 	//mouseinput();
 	//input_test();
-	//test();
-	map_editer();
+	test();
+	//map_editer();
 }
