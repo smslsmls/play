@@ -7,7 +7,7 @@ using namespace std;
 HANDLE h_input, h_output;
 DWORD console_old_mode;
 DWORD fdwMode;
-COORD zero;
+extern COORD zero;
 COORD position;
 COORD player, finish;
 
@@ -25,8 +25,6 @@ void CursorView(char);
 
 int map_editer()
 {
-	zero.X = 0;
-	zero.Y = 0;
 	player.X = -1;
 	player.Y = -1;
 	finish.X = -1;

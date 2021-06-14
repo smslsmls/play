@@ -148,7 +148,7 @@
     <ClCompile Include="tetris.cpp" />
     <ClCompile Include="mouseinput.cpp" />
     <ClCompile Include="map_editer.cpp" />
-    <ClCompile Include="make_maze.cpp" />
+    <ClCompile Include="maze.cpp" />
     <!--<ClCompile Include="test.cpp" />-->
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

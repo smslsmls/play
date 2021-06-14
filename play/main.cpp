@@ -9,7 +9,7 @@
 #include"mouseinput.h"
 #include"tetris.h"
 #include"map_editer.h"
-#include"make_maze.h"
+#include"maze.h"
 #pragma warning(disable:4996)
 using namespace std;
 
@@ -60,6 +60,8 @@ void input_test() {
 		}
 	}
 }
+
+COORD zero = { 0,0 };
 
 void test() {
 	fprintf(stderr, "%s\n", "test");
