@@ -1,2 +1,2 @@
 #pragma once
-void make_maze();
+void maze_play();

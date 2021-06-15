@@ -78,5 +78,5 @@ int main() {
 	//input_test();
 	//test();
 	//map_editer();
-	make_maze();
+	maze_play();
 }
